@@ -1,0 +1,139 @@
+j Main
+j Interrupt
+j Abnormal
+Main:   lui $fp,16384
+addi $sp,$zero,1024
+sw $zero,2($fp)
+addi $t0,$zero,-2048
+sw $t0,0($fp)
+addi $t0,$zero,-1
+sw $t0,1($fp)
+addi $t0,$zero,3
+sw $t0,2($fp)
+Read1:   lw $t0,8($fp)
+andi $t0,$t0,8
+beq $t0,$zero,Read1
+lw $s0,7($fp)
+add $s6,$s0,$zero
+Read2:   lw $t0,8($fp)
+andi $t0,$t0,8
+beq $t0,$zero,Read2
+lw $s1,7($fp)
+add $s7,$s1,$zero
+add $s2,$zero,$zero
+Judge:   sub $t0,$s1,$s0
+beq $t0,$zero,Result
+bltz $t0,Minus
+add $t1,$s0,$zero
+add $s0,$s1,$zero
+add $s1,$t1,$zero
+Minus:   sub $s0,$s0,$s1
+j Judge
+Result:   add $s2,$zero,$s1
+sw $s2,6($fp)
+j Read1
+Interrupt:   addi $sp,$sp,-36
+sw $fp,8($sp)
+sw $s6,7($sp)
+sw $s7,6($sp)
+sw $s2,5($sp)
+sw $k0,4($sp)
+sw $t0,3($sp)
+sw $t1,2($sp)
+sw $s0,1($sp)
+sw $s1,0($sp)
+sw $zero,2($fp)
+lw $t0,5($fp)
+andi $t1,$t0,2048
+beq $t1,$zero,AN2
+andi $t1,$t0,1024
+beq $t1,$zero,AN1
+andi $t1,$t0,512
+beq $t1,$zero,AN0
+srl $t0,$s6,4
+addi $t1,$zero,1792
+j Trans
+AN2:   andi $t0,$s6,15
+addi $t1,$zero,2816
+j Trans
+AN1:   srl $t0,$s7,4
+addi $t1,$zero,3328
+j Trans
+AN0:   andi $t0,$s7,15
+addi $t1,$zero,3584
+Trans:
+bne $t0,$zero,One
+addi $t1,$t1,192
+j Save
+One:   addi $t0,$t0,-1
+bne $t0,$zero,Two
+addi $t1,$t1,249
+j Save
+Two:   addi $t0,$t0,-1
+bne $t0,$zero,Three
+addi $t1,$t1,164
+j Save
+Three:   addi $t0,$t0,-1
+bne $t0,$zero,Four
+addi $t1,$t1,176
+j Save
+Four:   addi $t0,$t0,-1
+bne $t0,$zero,Five
+addi $t1,$t1,153
+j Save
+Five:   addi $t0,$t0,-1
+bne $t0,$zero,Six
+addi $t1,$t1,146
+j Save
+Six:   addi $t0,$t0,-1
+bne $t0,$zero,Seven
+addi $t1,$t1,130
+j Save
+Seven:   addi $t0,$t0,-1
+bne $t0,$zero,Eight
+addi $t1,$t1,248
+j Save
+Eight:   addi $t0,$t0,-1
+bne $t0,$zero,Nine
+addi $t1,$t1,128
+j Save
+Nine:   addi $t0,$t0,-1
+bne $t0,$zero,Ten
+addi $t1,$t1,144
+j Save
+Ten:   addi $t0,$t0,-1
+bne $t0,$zero,Eleven
+addi $t1,$t1,136
+j Save
+Eleven:   addi $t0,$t0,-1
+bne $t0,$zero,Twelve
+addi $t1,$t1,131
+j Save
+Twelve:   addi $t0,$t0,-1
+bne $t0,$zero,Thirteen
+addi $t1,$t1,198
+j Save
+Thirteen:   addi $t0,$t0,-1
+bne $t0,$zero,Fourteen
+addi $t1,$t1,161
+j Save
+Fourteen:   addi $t0,$t0,-1
+bne $t0,$zero,Fifteen
+addi $t1,$t1,134
+j Save
+Fifteen:   addi $t1,$t1,142
+Save:   sw $t1,5($fp)
+sw $s2,3($fp)
+addi $t0,$zero,3
+sw $t0,2($fp)
+lw $s1,0($sp)
+lw $s0,1($sp)
+lw $t1,2($sp)
+lw $t0,3($sp)
+lw $k0,4($sp)
+lw $s2,5($sp)
+lw $s7,6($sp)
+lw $s6,7($sp)
+lw $fp,8($sp)
+addi $sp,$sp,36
+jr $k0
